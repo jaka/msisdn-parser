@@ -33,10 +33,10 @@ func main() {
 
   rpc.Register(new(RPCMethods))
 
-  tcpAddr, err := net.ResolveTCPAddr("tcp", ":12345")
+  tcpAddr, err := net.ResolveTCPAddr("tcp4", ":12345")
   checkError(err)
 
-  listener, err := net.ListenTCP("tcp", tcpAddr)
+  listener, err := net.ListenTCP("tcp4", tcpAddr)
   checkError(err)
 
   for {
