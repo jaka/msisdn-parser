@@ -17,10 +17,10 @@ type Country struct {
 type CountryMap map[uint8]Country
 
 type Answer struct {
-  countryDial string
-  countryISO string
-  providerName string
-  subscriberNumber string
+  CountryDial string
+  CountryISO string
+  ProviderName string
+  SubscriberNumber string
 }
 
 const ZERO = 48
@@ -79,7 +79,7 @@ func getCountry(v string) (Country, int) {
   return Country{}, 0
 }
 
-func getProvider (providers []Provider, v string) (Provider, int) {
+func getProvider(providers []Provider, v string) (Provider, int) {
 
   var provider Provider
   var numberLength, providerCodeLength int
@@ -136,20 +136,20 @@ func ParseMSISDN(msisdn string) (Answer, bool) {
   if countryCodeLength == 0 {
     return answer, false
   }
-  answer.countryDial = number[:countryCodeLength]
-  answer.countryISO = country.iso
+  answer.CountryDial = number[:countryCodeLength]
+  answer.CountryISO = country.iso
 
   provider, providerCodeLength := getProvider(country.providers, number[countryCodeLength:])
   if providerCodeLength == 0 {
     return answer, false
   }
-  answer.providerName = provider.name
+  answer.ProviderName = provider.name
 
   subscriberNumber, subscriberNumberLength := getSubscriberNumber(provider.regex, number[countryCodeLength + providerCodeLength:])
   if subscriberNumberLength == 0 {
     return answer, false
   }
-  answer.subscriberNumber = subscriberNumber
+  answer.SubscriberNumber = subscriberNumber
 
   return answer, true
 }
