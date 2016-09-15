@@ -1,13 +1,50 @@
 package main
 
+import "os"
 import "fmt"
+import "net"
+import "net/rpc"
+import "net/rpc/jsonrpc"
 import "msisdn"
+import "errors"
+
+type RPCMethods struct {}
+type Results struct {
+  Answer msisdn.Answer
+}
+
+func (m *RPCMethods) ParseMSISDN (v string, results *Results) error {
+  var ok bool
+  (*results).Answer, ok = msisdn.ParseMSISDN(v)
+  if ok {
+    return nil
+  }
+  return errors.New("Invalid MSISDN")
+}
+
+func checkError(err error) {
+  if err != nil {
+    fmt.Println("Fatal error ", err.Error())
+    os.Exit(1)
+  }
+}
 
 func main() {
 
-  answer, ok := msisdn.ParseMSISDN("+38631700700")
+  rpc.Register(new(RPCMethods))
 
-  if ok {
-    fmt.Println(answer)
+  tcpAddr, err := net.ResolveTCPAddr("tcp", ":12345")
+  checkError(err)
+
+  listener, err := net.ListenTCP("tcp", tcpAddr)
+  checkError(err)
+
+  for {
+    conn, err := listener.Accept()
+    if err != nil {
+      continue
+    }
+    jsonrpc.ServeConn(conn)
   }
+
 }
