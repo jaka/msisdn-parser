@@ -5,8 +5,18 @@ import "net/rpc/jsonrpc"
 import "msisdn"
 import "fmt"
 
+const SERVER_NAME string = ":12345"
+
 type Results struct {
   Answer msisdn.Answer
+}
+
+func queryServer(msisdn string, results *Results) error {
+  client, err := jsonrpc.Dial("tcp4", SERVER_NAME)
+  if err == nil {
+    err = client.Call("RPCMethods.ParseMSISDN", msisdn, results)
+  }
+  return err
 }
 
 func main() {
@@ -19,8 +29,8 @@ func main() {
   }
   var msisdn = os.Args[1]
 
-  client, err := jsonrpc.Dial("tcp", ":12345")
-  err = client.Call("RPCMethods.ParseMSISDN", msisdn, &results)
+  err := queryServer(msisdn, &results)
+
   if  err != nil {
     fmt.Println("Error:", err.Error())
   } else {
