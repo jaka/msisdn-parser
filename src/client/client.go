@@ -11,8 +11,8 @@ type Results struct {
   Answer msisdn.Answer
 }
 
-func queryServer(msisdn string, results *Results) error {
-  client, err := jsonrpc.Dial("tcp4", SERVER_NAME)
+func queryServer(server_name, msisdn string, results *Results) error {
+  client, err := jsonrpc.Dial("tcp4", server_name)
   if err == nil {
     err = client.Call("RPCMethods.ParseMSISDN", msisdn, results)
   }
@@ -29,7 +29,11 @@ func main() {
   }
   var msisdn = os.Args[1]
 
-  err := queryServer(msisdn, &results)
+  server_name := os.Getenv("SERVER")
+  if server_name == "" {
+    server_name = SERVER_NAME
+  }
+  err := queryServer(server_name, msisdn, &results)
 
   if  err != nil {
     fmt.Println("Error:", err.Error())
