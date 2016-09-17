@@ -1,5 +1,11 @@
 # msisdn-parser
 
+Since the country list and list of providers and their range of subscriber numbers is incomplete, parser will return error, e.g. Invalid MSISDN, for all countries except Slovenia.
+
+Requirements: Vagrant and Go
+
+Developed and tested on Debian Squeeze.
+
 ### Usage
 
 ```
