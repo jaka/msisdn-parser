@@ -26,6 +26,9 @@ type Answer struct {
 const ZERO = 48
 const NINE = ZERO + 9
 
+// Country telecommunication providers
+// { destination code, provider name, regex for testing provider's subscriber number }
+
 var GreeceProviders = []Provider{}
 var CroatiaProviders = []Provider{}
 
@@ -47,6 +50,8 @@ var SloveniaProviders = []Provider{
   {"71", "Mobitel", "^(\\d{6})$"},
   {"7620", "Amis", "^(\\d{3})$"},
 }
+
+// World decomposition (into radix tree)
 
 var countries = CountryMap{
   3: { country: CountryMap{
