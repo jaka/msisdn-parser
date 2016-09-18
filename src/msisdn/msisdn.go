@@ -29,8 +29,13 @@ const NINE = ZERO + 9
 // Country telecommunication providers
 // { destination code, provider name, regex for testing provider's subscriber number }
 
-var GreeceProviders = []Provider{}
+
 var CroatiaProviders = []Provider{}
+
+var GermanyProviders = []Provider{
+  {"179", "O2", "^(\\d{7})$"},
+}
+var GreeceProviders = []Provider{}
 
 var SloveniaProviders = []Provider{
   {"3", "Telekom", "^(\\d{7})$"},
@@ -60,6 +65,9 @@ var countries = CountryMap{
       5: { nil, "HR", CroatiaProviders },
       6: { nil, "SI", SloveniaProviders },
     }},
+  }},
+  4: { country: CountryMap{
+    9: { nil, "DE", GermanyProviders },
   }},
   7: { nil, "RU", nil },
 }
